@@ -1,0 +1,64 @@
+How to use the R programming language:
+
+Day 2:
+
+Tidyverse:
+- Introduces the pipe operator %>%
+	. Don't have to call functions on the data sets in reverse order.
+	. Can start with the first one and have them done later. (See example)
+	
+Long vs. Wide Data:
+- WIDE (compact, good for visualization)
+- LONG (each instance of data, not a table)
+	. This one is usually better for R functions
+
+Joining Multiple Data Sets:
+- Left (Join matching vals from y to x)
+- Right (Join matching vals from x to y)
+- Inner (Join data. Retain only full rows with matches)
+- Full (Join data. Retain all values, all rows)
+
+---------------------------------------------------------------------
+BEFORE YOU START CODING: You can get help for any function
+	on the help page. Use the search tab.
+
+
+ACTUAL R CODING:
+- ctrl + enter = make console run this line of code
+
+	SYNTAX
+	- [] => indexing matrix/data
+	- $ => accessing the value of a matrix
+	example:
+		summary(cars$dist[cars$speed>=15])
+		... gives values of dataset of cars that are greater than or equal to
+		15 and performs certain transformations on them (min, max, etc).
+	- subset => keeps the values that meet requirements as a set of data
+	example:
+		summary(subset(cars,speed >= 15, dist))
+	- %>% => piping. Allows you to sequentially see the transformations applied to
+		dataset.
+	example:
+		cars %>%                                # using pipe operator
+		  filter(speed >= 15) %>% 
+		  select(dist) %>% 
+		  summary()
+	- <- => Storage operator. Saves something as a variable name.
+	
+	FUNCTIONS THAT CAN BE PERFORMED ON DATA:
+	- .frame => Not sure what it does *******
+	example:
+		df_wide <- data.frame(row = LETTERS[1:3], a = 1:3, b = 4:6, c = 7:9)
+	- pivot_longer => makes a datafame long data format.
+	- pivot_wider => make a datafram wide data format.
+	
+	SETTING WORKING DIRECTORY AND IMPORTING DATASETS:
+	- getwd() => getting the working directory
+	- setwd("C:/Users/Sam Bishop/Desktop/git/RStudio/example code") => setting the working directory
+	- reading a csv (from the ReadR package)
+	example:
+		purchase <- read_csv("approved_data_purchase-v5.csv",na = c("", "NA","NULL")) # NULL is not a default NA character string
+		zipcodes <- read_csv("zipcodes.csv")
+	
+	
+- Dataframe: A matrix that can have a mix of variable types within it.
