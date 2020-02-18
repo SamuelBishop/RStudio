@@ -34,8 +34,8 @@ getwd()   # What is my current working directory?
 
 # Change working directory to folder with data files
 # file paths can NOT have single backslash \
-setwd("~/Box Sync/Datafest2019") #MAC style
-setwd("C:/Users/tskb4/Box Sync/Datafest2019")  #PC style
+#setwd("~/Box Sync/Datafest2019") #MAC style
+setwd("C:/Users/Sam Bishop/Desktop/git/RStudio/example code")  #PC style
 # can also change working direction through Files tab
 # 1. click ... then browse to desired folder
 # 2. click More
@@ -49,24 +49,31 @@ str(purchase)      # how did R read in the data?
                    # same as clicking blue triangle in the environment tab
 summary(purchase)  # 5 number summary of numeric and lengths of characters
 unique(purchase$la_event_type_cat) # see the major category types
-table(purchase$la_event_type_cat)
+table(purchase$la_event_type_cat) # see how many of the data entries are in category types
 
 # remove instances related to parking and with a year in the future
 # also remove variables not of interest ID and user variables (mostly NAs)
+
+# FOR FILTER: get rid of everything that is not equal to parking and keep events where year is < 2019.
+# FOR SELECT: Only select some of the columns that you want
 purchase <- purchase %>% 
                 filter(la_event_type_cat!="PARKING",year(event_date_time)<2019) %>% 
                 select(-primary_act_id,-secondary_act_id,-purch_party_lkup_id,-c(fin_mkt_nm:dist_to_ven))
 
 #### Creating a new variable with mutate ####
+# mutate makes new variable names within the data set. Here we are making three new variables and assigning
+# them values.
 purchase <- purchase %>% 
               mutate(total_sale = tickets_purchased_qty*trans_face_val_amt,
                      days_to_event = difftime(event_dt,sales_ord_tran_dt,units = "days"),
                      sale_hour = hour(sales_ord_create_dttm))
 
+
 # playing with string variables
 purchase <- purchase %>% 
             unite(combined_cat , c("major_cat_name","minor_cat_name"),remove = F) %>% # combine major and minor cat name into a new category keeping the original variables
             separate(onsale_dt, c("onsale_year","onsale_month","onsale_day"),"-",remove=F) # separate the onsale date into 3 variables: Year, Month, Day
+
 
 #### Create a contingency table of days_to_event for major_cat_name by delivery_type_cd ####
 
